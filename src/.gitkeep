@@ -1,0 +1,2 @@
+# This directory will contain Magento 2 source code after installation
+# Run: docker-compose exec php bash /var/www/html/scripts/install-magento.sh

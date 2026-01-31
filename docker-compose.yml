@@ -1,0 +1,112 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: magento2_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root123}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-magento2}
+      MYSQL_USER: ${MYSQL_USER:-magento}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-magento123}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/custom.cnf
+    ports:
+      - "3307:3306"
+    networks:
+      - magento_network
+    command: --default-authentication-plugin=mysql_native_password
+
+  # Elasticsearch (required for Magento 2.4+)
+  elasticsearch:
+    image: elasticsearch:7.17.9
+    container_name: magento2_elasticsearch
+    restart: always
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - magento_network
+
+  # Redis for cache and sessions
+  redis:
+    image: redis:7-alpine
+    container_name: magento2_redis
+    restart: always
+    ports:
+      - "6380:6379"
+    networks:
+      - magento_network
+
+  # PHP-FPM with Magento
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: magento2_php
+    restart: always
+    volumes:
+      - ./src:/var/www/html
+      - ./php/php.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./php/php-fpm.conf:/usr/local/etc/php-fpm.d/zz-custom.conf
+    environment:
+      MYSQL_HOST: db
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-magento2}
+      MYSQL_USER: ${MYSQL_USER:-magento}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-magento123}
+      ELASTICSEARCH_HOST: elasticsearch
+      ELASTICSEARCH_PORT: 9200
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - db
+      - elasticsearch
+      - redis
+    networks:
+      - magento_network
+
+  # Nginx Web Server
+  nginx:
+    image: nginx:1.24-alpine
+    container_name: magento2_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - php
+    networks:
+      - magento_network
+
+  # MailHog for email testing (optional)
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: magento2_mailhog
+    restart: always
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    networks:
+      - magento_network
+
+volumes:
+  db_data:
+    driver: local
+  es_data:
+    driver: local
+
+networks:
+  magento_network:
+    driver: bridge
