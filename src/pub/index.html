@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magento 2 Docker - Środowisko Gotowe!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .status {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .status h2 {
+            color: #155724;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status h2::before {
+            content: "✅";
+            font-size: 1.5em;
+        }
+        
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .service {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        
+        .service:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .service h3 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .service p {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        
+        .service .port {
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .service .running {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .info-box h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .info-box ol {
+            margin-left: 20px;
+            color: #856404;
+        }
+        
+        .info-box li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .info-box code {
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+        
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .link-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: transform 0.2s;
+            text-align: center;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .link-card h4 {
+            margin-bottom: 5px;
+        }
+        
+        .link-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .php-info {
+            background: #e7f3ff;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .php-info h3 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Magento 2 Docker</h1>
+        <p class="subtitle">Środowisko Docker jest gotowe i działa!</p>
+        
+        <div class="status">
+            <h2>Status: Wszystkie usługi działają</h2>
+            <p>Wszystkie kontenery Docker zostały pomyślnie uruchomione i są gotowe do pracy.</p>
+        </div>
+        
+        <h2 style="margin-bottom: 20px; color: #333;">🔧 Uruchomione Usługi</h2>
+        <div class="services">
+            <div class="service">
+                <h3>🌐 Nginx</h3>
+                <p>Serwer web</p>
+                <p class="port">Port: 80, 443</p>
+                <p class="running">● Running</p>
+            </div>
+            
+            <div class="service">
+                <h3>🐘 PHP 8.2-FPM</h3>
+                <p>Interpreter PHP</p>
+                <p class="port">Port: 9000</p>
+                <p class="running">● Running</p>
+            </div>
+            
+            <div class="service">
+                <h3>🗄️ MySQL 8.0</h3>
+                <p>Baza danych</p>
+                <p class="port">Port: 3307</p>
+                <p class="running">● Running</p>
+            </div>
+            
+            <div class="service">
+                <h3>🔍 Elasticsearch 7.17</h3>
+                <p>Wyszukiwarka</p>
+                <p class="port">Port: 9200</p>
+                <p class="running">● Running</p>
+            </div>
+            
+            <div class="service">
+                <h3>⚡ Redis 7</h3>
+                <p>Cache & Sesje</p>
+                <p class="port">Port: 6380</p>
+                <p class="running">● Running</p>
+            </div>
+            
+            <div class="service">
+                <h3>📧 MailHog</h3>
+                <p>Email Testing</p>
+                <p class="port">Port: 8025</p>
+                <p class="running">● Running</p>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>📝 Aby zainstalować Magento 2:</h3>
+            <ol>
+                <li>Uzyskaj klucze dostępu z <a href="https://marketplace.magento.com/customer/accessKeys/" target="_blank">Magento Marketplace</a></li>
+                <li>Dodaj klucze do pliku <code>.env</code>:
+                    <br><code>COMPOSER_AUTH_PUBLIC_KEY=twój_public_key</code>
+                    <br><code>COMPOSER_AUTH_PRIVATE_KEY=twój_private_key</code>
+                </li>
+                <li>Uruchom instalację:
+                    <br><code>docker-compose exec php bash</code>
+                    <br><code>bash /var/www/html/install-magento.sh</code>
+                </li>
+            </ol>
+        </div>
+        
+        <h2 style="margin-bottom: 20px; color: #333;">🔗 Przydatne Linki</h2>
+        <div class="links">
+            <a href="http://localhost:8025" class="link-card" target="_blank">
+                <h4>📧 MailHog</h4>
+                <p>Testowanie emaili</p>
+            </a>
+            
+            <a href="http://localhost:9200" class="link-card" target="_blank">
+                <h4>🔍 Elasticsearch</h4>
+                <p>Status wyszukiwarki</p>
+            </a>
+            
+            <a href="/phpinfo.php" class="link-card">
+                <h4>🐘 PHP Info</h4>
+                <p>Informacje o PHP</p>
+            </a>
+        </div>
+        
+        <div class="php-info">
+            <h3>💻 Informacje Techniczne</h3>
+            <p><strong>PHP Version:</strong> 8.2.30</p>
+            <p><strong>Zainstalowane rozszerzenia:</strong> bcmath, gd, intl, mbstring, mysqli, pdo_mysql, soap, xsl, zip, sockets, sodium, opcache</p>
+            <p><strong>Composer:</strong> 2.x</p>
+            <p><strong>Memory Limit:</strong> 2GB</p>
+        </div>
+    </div>
+</body>
+</html>

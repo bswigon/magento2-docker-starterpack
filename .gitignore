@@ -1,7 +1,4 @@
-# Ignore Magento files
-/src/*
-!/src/.gitkeep
-
+# Ignore Magento generated/vendor files (handled in src/.gitignore)
 # Ignore environment files
 .env.local
 .env.*.local
