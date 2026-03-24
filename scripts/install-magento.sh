@@ -39,7 +39,7 @@ fi
 
 echo "Step 1: Waiting for MySQL to be ready..."
 for i in {1..30}; do
-    if mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "SELECT 1" >/dev/null 2>&1; then
+    if php -r "try { new PDO('mysql:host=$MYSQL_HOST;dbname=$MYSQL_DATABASE', '$MYSQL_USER', '$MYSQL_PASSWORD'); exit(0); } catch (Exception \$e) { exit(1); }"; then
         echo "MySQL is ready!"
         break
     fi
