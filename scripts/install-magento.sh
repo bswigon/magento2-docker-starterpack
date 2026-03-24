@@ -32,9 +32,16 @@ cd /var/www/html
 
 # Check if Magento is already installed
 if [ -f "app/etc/env.php" ]; then
-    echo "Magento appears to be already installed."
-    echo "If you want to reinstall, please remove app/etc/env.php first."
-    exit 0
+    if [ "$1" == "--force" ]; then
+        echo "Forcing reinstallation. Removing old configuration..."
+        rm -f app/etc/env.php
+    else
+        echo "Magento appears to be already installed."
+        echo "If you want to reinstall, run this script with --force:"
+        echo "  bash install-magento.sh --force"
+        echo "Or manually remove app/etc/env.php first."
+        exit 0
+    fi
 fi
 
 echo "Step 1: Waiting for MySQL to be ready..."
@@ -58,14 +65,19 @@ for i in {1..30}; do
 done
 
 echo "Step 3: Installing Magento 2 via Composer..."
+if [ -f "auth.json" ]; then
+    mkdir -p ~/.composer
+    cp auth.json ~/.composer/auth.json
+fi
+
 if [ ! -f "composer.json" ]; then
     echo "Creating Magento project (this may take 10-15 minutes)..."
-    composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition:2.4.7 /tmp/magento --no-interaction
+    composer config -g audit.block-insecure false
+    composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition:2.4.7 /tmp/magento --no-interaction --no-audit
     
-    # Move files to current directory
-    shopt -s dotglob
-    mv /tmp/magento/* /var/www/html/
-    rmdir /tmp/magento
+    # Move files to current directory and gracefully merge
+    cp -a /tmp/magento/. /var/www/html/
+    rm -rf /tmp/magento
     
     echo "Magento downloaded successfully!"
 else
